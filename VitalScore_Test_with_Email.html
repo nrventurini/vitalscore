@@ -1,0 +1,112 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>VitalScore - Test de Edad Biológica</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background-color: #f9f9f9; color: #333; }
+        h1 { color: #005170; }
+        .question { margin-bottom: 20px; }
+        .result { font-size: 1.4em; font-weight: bold; margin-top: 30px; display: none; }
+        button { background-color: #007B9E; color: white; padding: 10px 20px; border: none; cursor: pointer; }
+        button:hover { background-color: #005170; }
+    </style>
+</head>
+<body>
+    <h1>VitalScore: Calcula tu Edad Biológica Estimada</h1>
+    <p>Completa este test gratuito y recibe tu resultado directamente en tu correo electrónico.</p>
+    <form id="vitalscore-form">
+        <div class="question">
+            <label>Tu email:</label><br>
+            <input type="email" id="userEmail" required style="width: 300px; padding: 5px;">
+        </div>
+        <div class="question">
+            <label>1. ¿Cómo es tu descanso nocturno habitual?</label><br>
+            <select name="q1">
+                <option value="5">Duermo más de 7h y me despierto descansado</option>
+                <option value="4">Duermo entre 6–7h, descanso aceptable</option>
+                <option value="3">Me cuesta conciliar el sueño</option>
+                <option value="2">Duermo menos de 6h</option>
+                <option value="1">Tengo insomnio frecuente</option>
+            </select>
+        </div>
+        <div class="question">
+            <label>2. ¿Con qué frecuencia haces ejercicio físico?</label><br>
+            <select name="q2">
+                <option value="5">4+ veces por semana</option>
+                <option value="4">2–3 veces por semana</option>
+                <option value="3">1 vez a la semana</option>
+                <option value="2">Ocasional</option>
+                <option value="1">Sedentario</option>
+            </select>
+        </div>
+        <div class="question">
+            <label>3. ¿Cómo describirías tu alimentación?</label><br>
+            <select name="q3">
+                <option value="5">Equilibrada</option>
+                <option value="4">Intento comer bien</option>
+                <option value="3">Comida rápida frecuente</option>
+                <option value="2">Poca conciencia nutricional</option>
+                <option value="1">Ningún control</option>
+            </select>
+        </div>
+        <div class="question">
+            <label>4. ¿Fumas o has fumado?</label><br>
+            <select name="q4">
+                <option value="5">Nunca</option>
+                <option value="4">Exfumador +5 años</option>
+                <option value="3">Ocasional</option>
+                <option value="2">Menos de 10 cig/día</option>
+                <option value="1">Mucho a diario</option>
+            </select>
+        </div>
+        <div class="question">
+            <label>5. ¿Cuál es tu nivel de estrés actual?</label><br>
+            <select name="q5">
+                <option value="5">Muy bajo</option>
+                <option value="4">Bajo</option>
+                <option value="3">Medio</option>
+                <option value="2">Alto</option>
+                <option value="1">Muy alto</option>
+            </select>
+        </div>
+        <button type="button" onclick="calculateAndShow()">Recibir resultado por email</button>
+    </form>
+    <div class="result" id="result"></div>
+
+    <script>
+        function calculateAndShow() {
+            const email = document.getElementById("userEmail").value;
+            if (!email) {
+                alert("Por favor, introduce tu email para recibir el resultado.");
+                return;
+            }
+
+            const form = document.getElementById("vitalscore-form");
+            let score = 0;
+            for (let i = 1; i <= 5; i++) {
+                const question = form.querySelector(`[name="q${i}"]`);
+                score += parseInt(question.value);
+            }
+
+            let message = "";
+            if (score >= 23) {
+                message = "Excelente. Tu edad biológica estimada es más joven que tu edad cronológica.";
+            } else if (score >= 18) {
+                message = "Tu edad biológica está cerca de la cronológica. Puedes mejorar aún más.";
+            } else if (score >= 13) {
+                message = "Tu cuerpo muestra señales de envejecimiento acelerado.";
+            } else {
+                message = "Atención: podrías estar envejeciendo biológicamente de forma prematura.";
+            }
+
+            document.getElementById("result").style.display = "block";
+            document.getElementById("result").innerText = `Gracias por realizar el test. Tu VitalScore es: ${score}/25
+${message}
+
+(Nota: el resultado aún no se envía automáticamente. Esto se implementa con un sistema de email marketing externo como Mailchimp, Brevo, etc.)`;
+        }
+    </script>
+</body>
+</html>
