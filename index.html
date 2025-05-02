@@ -3,52 +3,465 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>VitalScore - Test de Edad Biológica</title>
+    <title>VitalScore PRO - Funcional Completo</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; padding: 0; background-color: #f4f8fb; }
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f8fb; }
         h1, h2 { color: #003366; }
         .question { margin-bottom: 20px; }
         label { display: block; margin-top: 8px; }
-        button { background-color: #0056b3; color: white; padding: 10px 20px; border: none; cursor: pointer; margin-top: 20px; }
+        button { background-color: #0056b3; color: white; padding: 10px 20px; border: none; margin-top: 20px; cursor: pointer; }
         .result { margin-top: 30px; padding: 20px; background: #e0f7fa; border: 1px solid #b2ebf2; }
     </style>
 </head>
 <body>
-    <h1>VitalScore: Test de Edad Biológica</h1>
+    <h1>VitalScore PRO - Funcional Completo</h1>
     <form id="vitalForm">
-        <div class="question">
-            <h2>1. ¿Cómo describirías tu nivel de energía diaria?</h2>
-            <label><input type="radio" name="energia" value="10"> Muy alto</label>
-            <label><input type="radio" name="energia" value="7"> Bueno</label>
-            <label><input type="radio" name="energia" value="4"> Moderado</label>
-            <label><input type="radio" name="energia" value="1"> Bajo</label>
-        </div>
+    <div class="question">
+        <h2>Introduce tu edad cronológica (años):</h2>
+        <input type="number" id="edadCronologica" name="edadCronologica" min="18" max="100" required>
+    </div>
+<div class="question">
+<h2>1. ¿Con qué frecuencia haces ejercicio de fuerza?</h2>
+<label><input type="radio" name="fuerza" value="10"> 3 o más veces por semana</label>
+<label><input type="radio" name="fuerza" value="7"> 1–2 veces por semana</label>
+<label><input type="radio" name="fuerza" value="4"> Ocasionalmente</label>
+<label><input type="radio" name="fuerza" value="1"> Nunca</label>
+</div>
+<div class="question">
+<h2>2. ¿Cómo describirías tu nivel de energía diaria?</h2>
+<label><input type="radio" name="energia" value="10"> Muy alto durante todo el día</label>
+<label><input type="radio" name="energia" value="7"> Bueno en general</label>
+<label><input type="radio" name="energia" value="4"> Fluctúa bastante</label>
+<label><input type="radio" name="energia" value="1"> Muy bajo o con fatiga constante</label>
+</div>
+<div class="question">
+<h2>3. ¿Cuántas horas duermes por noche, y qué tan reparador es tu sueño?</h2>
+<label><input type="radio" name="sueno" value="10"> Duermo 7–9h con sueño profundo y reparador</label>
+<label><input type="radio" name="sueno" value="7"> 6–7h con calidad razonable</label>
+<label><input type="radio" name="sueno" value="4"> Menos de 6h o sueño poco profundo</label>
+<label><input type="radio" name="sueno" value="1"> Insomnio o sueño interrumpido</label>
+</div>
+<div class="question">
+<h2>4. ¿Cómo describirías tu nivel de estrés diario?</h2>
+<label><input type="radio" name="estres" value="10"> Muy bajo, me siento en calma</label>
+<label><input type="radio" name="estres" value="7"> Moderado, lo gestiono bien</label>
+<label><input type="radio" name="estres" value="4"> Alto, pero ocasional</label>
+<label><input type="radio" name="estres" value="1"> Muy alto o constante</label>
+</div>
+<div class="question">
+<h2>5. ¿Cómo calificarías tu alimentación?</h2>
+<label><input type="radio" name="alimentacion" value="10"> Muy saludable y equilibrada</label>
+<label><input type="radio" name="alimentacion" value="7"> Bastante saludable</label>
+<label><input type="radio" name="alimentacion" value="4"> Poco saludable</label>
+<label><input type="radio" name="alimentacion" value="1"> Muy pobre o basada en ultraprocesados</label>
+</div>
+<div class="question">
+<h2>6. ¿Tienes facilidad para mantener un peso saludable?</h2>
+<label><input type="radio" name="peso" value="10"> Sí, sin esfuerzo</label>
+<label><input type="radio" name="peso" value="7"> Sí, pero necesito cuidarme</label>
+<label><input type="radio" name="peso" value="4"> Me cuesta mantenerlo</label>
+<label><input type="radio" name="peso" value="1"> Estoy en sobrepeso u obesidad</label>
+</div>
+<div class="question">
+<h2>7. ¿Cuál es tu nivel de actividad física general?</h2>
+<label><input type="radio" name="actividad" value="10"> Muy activo diariamente</label>
+<label><input type="radio" name="actividad" value="7"> Activo la mayoría de días</label>
+<label><input type="radio" name="actividad" value="4"> Sedentario la mayor parte del tiempo</label>
+<label><input type="radio" name="actividad" value="1"> Totalmente inactivo</label>
+</div>
+<div class="question">
+<h2>8. ¿Con qué frecuencia consumes alcohol?</h2>
+<label><input type="radio" name="alcohol" value="10"> Nunca o en ocasiones especiales</label>
+<label><input type="radio" name="alcohol" value="7"> 1–2 veces por semana</label>
+<label><input type="radio" name="alcohol" value="4"> 3–4 veces por semana</label>
+<label><input type="radio" name="alcohol" value="1"> Casi a diario o diario</label>
+</div>
+<div class="question">
+<h2>9. ¿Fumas actualmente o has fumado en el pasado reciente?</h2>
+<label><input type="radio" name="tabaco" value="10"> Nunca he fumado</label>
+<label><input type="radio" name="tabaco" value="7"> Dejé de fumar hace más de 5 años</label>
+<label><input type="radio" name="tabaco" value="4"> Fumo ocasionalmente</label>
+<label><input type="radio" name="tabaco" value="1"> Fumo diariamente</label>
+</div>
+<div class="question">
+<h2>10. ¿Tomas suplementos con regularidad (vitamina D, omega 3, magnesio...)?</h2>
+<label><input type="radio" name="suplementos" value="10"> Sí, con recomendación profesional</label>
+<label><input type="radio" name="suplementos" value="7"> Sí, por mi cuenta</label>
+<label><input type="radio" name="suplementos" value="4"> Ocasionalmente</label>
+<label><input type="radio" name="suplementos" value="1"> No tomo suplementos</label>
+</div>
+<div class="question">
+<h2>11. ¿Con qué frecuencia te resfrías o enfermas al año?</h2>
+<label><input type="radio" name="inmunidad" value="10"> 0–1 veces</label>
+<label><input type="radio" name="inmunidad" value="7"> 2–3 veces</label>
+<label><input type="radio" name="inmunidad" value="4"> 4–5 veces</label>
+<label><input type="radio" name="inmunidad" value="1"> Más de 5 veces</label>
+</div>
+<div class="question">
+<h2>12. ¿Con qué frecuencia sientes motivación y propósito en tu vida?</h2>
+<label><input type="radio" name="proposito" value="10"> Todos los días</label>
+<label><input type="radio" name="proposito" value="7"> Varias veces por semana</label>
+<label><input type="radio" name="proposito" value="4"> Ocasionalmente</label>
+<label><input type="radio" name="proposito" value="1"> Raramente o nunca</label>
+</div>
+<div class="question">
+<h2>13. ¿Tienes relaciones sociales de calidad?</h2>
+<label><input type="radio" name="social" value="10"> Sí, sólidas y frecuentes</label>
+<label><input type="radio" name="social" value="7"> Sí, aunque limitadas</label>
+<label><input type="radio" name="social" value="4"> Pocas y distantes</label>
+<label><input type="radio" name="social" value="1"> Prácticamente ninguna</label>
+</div>
+<div class="question">
+<h2>14. ¿Tienes controladas enfermedades como hipertensión, colesterol o diabetes?</h2>
+<label><input type="radio" name="patologias" value="10"> No tengo ninguna de esas condiciones</label>
+<label><input type="radio" name="patologias" value="7"> Sí, pero están bien controladas</label>
+<label><input type="radio" name="patologias" value="4"> Tengo varias y mal controladas</label>
+<label><input type="radio" name="patologias" value="1"> No lo sé / sin seguimiento médico</label>
+</div>
+<div class="question">
+<h2>15. ¿Con qué frecuencia revisas tu salud (chequeos, analíticas)?</h2>
+<label><input type="radio" name="chequeos" value="10"> Cada 6–12 meses</label>
+<label><input type="radio" name="chequeos" value="7"> Una vez cada 1–2 años</label>
+<label><input type="radio" name="chequeos" value="4"> Casi nunca</label>
+<label><input type="radio" name="chequeos" value="1"> Nunca me he hecho revisiones</label>
+</div>
+<div class="question">
+<h2>16. ¿Cómo describirías tu salud bucal?</h2>
+<label><input type="radio" name="bucal" value="10"> Excelente (higiene + revisiones)</label>
+<label><input type="radio" name="bucal" value="7"> Buena pero mejorable</label>
+<label><input type="radio" name="bucal" value="4"> Mala (encías, caries frecuentes)</label>
+<label><input type="radio" name="bucal" value="1"> Muy deficiente o sin seguimiento</label>
+</div>
+<div class="question">
+<h2>17. ¿Has notado disminución del deseo sexual o líbido?</h2>
+<label><input type="radio" name="libido" value="10"> No, mantengo un deseo saludable</label>
+<label><input type="radio" name="libido" value="7"> Sí, leve</label>
+<label><input type="radio" name="libido" value="4"> Sí, moderada</label>
+<label><input type="radio" name="libido" value="1"> Sí, notoria o ausente</label>
+</div>
+<div class="question">
+<h2>18. ¿Tienes horarios regulares de comida y sueño?</h2>
+<label><input type="radio" name="ritmos" value="10"> Totalmente regulares</label>
+<label><input type="radio" name="ritmos" value="7"> Generalmente estables</label>
+<label><input type="radio" name="ritmos" value="4"> Irregulares frecuentemente</label>
+<label><input type="radio" name="ritmos" value="1"> Caóticos o desordenados</label>
+</div>
+<div class="question">
+<h2>19. ¿Tienes antecedentes familiares de enfermedades cardiovasculares o cáncer?</h2>
+<label><input type="radio" name="antecedentes" value="10"> No, ninguno</label>
+<label><input type="radio" name="antecedentes" value="7"> Sí, pero en edad avanzada</label>
+<label><input type="radio" name="antecedentes" value="4"> Sí, en edad temprana (antes de 50)</label>
+<label><input type="radio" name="antecedentes" value="1"> No lo sé</label>
+</div>
+<div class="question">
+<h2>20. ¿Consumes comida ultraprocesada más de 3 veces por semana?</h2>
+<label><input type="radio" name="ultraprocesados" value="10"> Nunca o muy rara vez</label>
+<label><input type="radio" name="ultraprocesados" value="7"> 1–2 veces por semana</label>
+<label><input type="radio" name="ultraprocesados" value="4"> 3–4 veces por semana</label>
+<label><input type="radio" name="ultraprocesados" value="1"> A diario o casi diario</label>
+</div>
 
-        <div class="question">
-            <h2>2. ¿Cuál es tu edad?</h2>
-            <input type="number" name="edad" min="0" max="120">
-        </div>
-
-        <button type="button" onclick="calcularResultado()">Enviar</button>
+    <button type="button" onclick="calcularResultado()">Calcular VitalScore</button>
     </form>
 
     <div class="result" id="resultado" style="display:none;">
-        <h2>Tu Resultado VitalScore:</h2>
+        <h2>🎯 Tu VitalScore estimado es:</h2>
         <p id="vitalScore"></p>
+        <h2>🧬 Tu Edad Biológica Estimada es:</h2>
         <p id="edadBiologica"></p>
+    </div>
+
+    <div class="result" id="consejo" style="margin-top:20px; display:none;">
+        <h2>🧠 Consejo Personalizado</h2>
+        <p id="textoConsejo"></p>
     </div>
 
     <script>
         function calcularResultado() {
-            let energia = parseInt(document.querySelector('input[name="energia"]:checked')?.value || 0);
-            let edad = parseInt(document.querySelector('input[name="edad"]').value || 0);
-            let score = energia * 10;
+            let total = 0;
+            let maximo = 0;
 
-            let edadBio = edad - (score / 20);
+            let val_fuerza = document.querySelector('input[name="fuerza"]:checked');
+            if (val_fuerza) {
+                total += parseInt(val_fuerza.value);
+                maximo += 10;
+            }
+    
+            let val_energia = document.querySelector('input[name="energia"]:checked');
+            if (val_energia) {
+                total += parseInt(val_energia.value);
+                maximo += 10;
+            }
+    
+            let val_sueno = document.querySelector('input[name="sueno"]:checked');
+            if (val_sueno) {
+                total += parseInt(val_sueno.value);
+                maximo += 10;
+            }
+    
+            let val_estres = document.querySelector('input[name="estres"]:checked');
+            if (val_estres) {
+                total += parseInt(val_estres.value);
+                maximo += 10;
+            }
+    
+            let val_alimentacion = document.querySelector('input[name="alimentacion"]:checked');
+            if (val_alimentacion) {
+                total += parseInt(val_alimentacion.value);
+                maximo += 10;
+            }
+    
+            let val_peso = document.querySelector('input[name="peso"]:checked');
+            if (val_peso) {
+                total += parseInt(val_peso.value);
+                maximo += 10;
+            }
+    
+            let val_actividad = document.querySelector('input[name="actividad"]:checked');
+            if (val_actividad) {
+                total += parseInt(val_actividad.value);
+                maximo += 10;
+            }
+    
+            let val_alcohol = document.querySelector('input[name="alcohol"]:checked');
+            if (val_alcohol) {
+                total += parseInt(val_alcohol.value);
+                maximo += 10;
+            }
+    
+            let val_tabaco = document.querySelector('input[name="tabaco"]:checked');
+            if (val_tabaco) {
+                total += parseInt(val_tabaco.value);
+                maximo += 10;
+            }
+    
+            let val_suplementos = document.querySelector('input[name="suplementos"]:checked');
+            if (val_suplementos) {
+                total += parseInt(val_suplementos.value);
+                maximo += 10;
+            }
+    
+            let val_inmunidad = document.querySelector('input[name="inmunidad"]:checked');
+            if (val_inmunidad) {
+                total += parseInt(val_inmunidad.value);
+                maximo += 10;
+            }
+    
+            let val_proposito = document.querySelector('input[name="proposito"]:checked');
+            if (val_proposito) {
+                total += parseInt(val_proposito.value);
+                maximo += 10;
+            }
+    
+            let val_social = document.querySelector('input[name="social"]:checked');
+            if (val_social) {
+                total += parseInt(val_social.value);
+                maximo += 10;
+            }
+    
+            let val_patologias = document.querySelector('input[name="patologias"]:checked');
+            if (val_patologias) {
+                total += parseInt(val_patologias.value);
+                maximo += 10;
+            }
+    
+            let val_chequeos = document.querySelector('input[name="chequeos"]:checked');
+            if (val_chequeos) {
+                total += parseInt(val_chequeos.value);
+                maximo += 10;
+            }
+    
+            let val_bucal = document.querySelector('input[name="bucal"]:checked');
+            if (val_bucal) {
+                total += parseInt(val_bucal.value);
+                maximo += 10;
+            }
+    
+            let val_libido = document.querySelector('input[name="libido"]:checked');
+            if (val_libido) {
+                total += parseInt(val_libido.value);
+                maximo += 10;
+            }
+    
+            let val_ritmos = document.querySelector('input[name="ritmos"]:checked');
+            if (val_ritmos) {
+                total += parseInt(val_ritmos.value);
+                maximo += 10;
+            }
+    
+            let val_antecedentes = document.querySelector('input[name="antecedentes"]:checked');
+            if (val_antecedentes) {
+                total += parseInt(val_antecedentes.value);
+                maximo += 10;
+            }
+    
+            let val_ultraprocesados = document.querySelector('input[name="ultraprocesados"]:checked');
+            if (val_ultraprocesados) {
+                total += parseInt(val_ultraprocesados.value);
+                maximo += 10;
+            }
+    
+            let score = Math.round((total / maximo) * 100);
+            document.getElementById("vitalScore").innerText = score + " / 100";
 
-            document.getElementById("vitalScore").innerText = "Tu VitalScore es: " + score;
-            document.getElementById("edadBiologica").innerText = "Tu Edad Biológica estimada es: " + Math.round(edadBio) + " años";
+            let edadInput = document.getElementById("edadCronologica");
+            let edadCronologica = edadInput ? parseInt(edadInput.value) : 35;
+            let edadBiologica = Math.round(edadCronologica - ((score - 50) / 2));
+            document.getElementById("edadBiologica").innerText = edadBiologica + " años";
+
             document.getElementById("resultado").style.display = "block";
+
+            let debil = null;
+            let peorValor = 11;
+
+            let valCheck_fuerza = document.querySelector('input[name="fuerza"]:checked');
+            if (valCheck_fuerza && parseInt(valCheck_fuerza.value) < peorValor) {
+                peorValor = parseInt(valCheck_fuerza.value);
+                debil = "fuerza";
+            }
+    
+            let valCheck_energia = document.querySelector('input[name="energia"]:checked');
+            if (valCheck_energia && parseInt(valCheck_energia.value) < peorValor) {
+                peorValor = parseInt(valCheck_energia.value);
+                debil = "energia";
+            }
+    
+            let valCheck_sueno = document.querySelector('input[name="sueno"]:checked');
+            if (valCheck_sueno && parseInt(valCheck_sueno.value) < peorValor) {
+                peorValor = parseInt(valCheck_sueno.value);
+                debil = "sueno";
+            }
+    
+            let valCheck_estres = document.querySelector('input[name="estres"]:checked');
+            if (valCheck_estres && parseInt(valCheck_estres.value) < peorValor) {
+                peorValor = parseInt(valCheck_estres.value);
+                debil = "estres";
+            }
+    
+            let valCheck_alimentacion = document.querySelector('input[name="alimentacion"]:checked');
+            if (valCheck_alimentacion && parseInt(valCheck_alimentacion.value) < peorValor) {
+                peorValor = parseInt(valCheck_alimentacion.value);
+                debil = "alimentacion";
+            }
+    
+            let valCheck_peso = document.querySelector('input[name="peso"]:checked');
+            if (valCheck_peso && parseInt(valCheck_peso.value) < peorValor) {
+                peorValor = parseInt(valCheck_peso.value);
+                debil = "peso";
+            }
+    
+            let valCheck_actividad = document.querySelector('input[name="actividad"]:checked');
+            if (valCheck_actividad && parseInt(valCheck_actividad.value) < peorValor) {
+                peorValor = parseInt(valCheck_actividad.value);
+                debil = "actividad";
+            }
+    
+            let valCheck_alcohol = document.querySelector('input[name="alcohol"]:checked');
+            if (valCheck_alcohol && parseInt(valCheck_alcohol.value) < peorValor) {
+                peorValor = parseInt(valCheck_alcohol.value);
+                debil = "alcohol";
+            }
+    
+            let valCheck_tabaco = document.querySelector('input[name="tabaco"]:checked');
+            if (valCheck_tabaco && parseInt(valCheck_tabaco.value) < peorValor) {
+                peorValor = parseInt(valCheck_tabaco.value);
+                debil = "tabaco";
+            }
+    
+            let valCheck_suplementos = document.querySelector('input[name="suplementos"]:checked');
+            if (valCheck_suplementos && parseInt(valCheck_suplementos.value) < peorValor) {
+                peorValor = parseInt(valCheck_suplementos.value);
+                debil = "suplementos";
+            }
+    
+            let valCheck_inmunidad = document.querySelector('input[name="inmunidad"]:checked');
+            if (valCheck_inmunidad && parseInt(valCheck_inmunidad.value) < peorValor) {
+                peorValor = parseInt(valCheck_inmunidad.value);
+                debil = "inmunidad";
+            }
+    
+            let valCheck_proposito = document.querySelector('input[name="proposito"]:checked');
+            if (valCheck_proposito && parseInt(valCheck_proposito.value) < peorValor) {
+                peorValor = parseInt(valCheck_proposito.value);
+                debil = "proposito";
+            }
+    
+            let valCheck_social = document.querySelector('input[name="social"]:checked');
+            if (valCheck_social && parseInt(valCheck_social.value) < peorValor) {
+                peorValor = parseInt(valCheck_social.value);
+                debil = "social";
+            }
+    
+            let valCheck_patologias = document.querySelector('input[name="patologias"]:checked');
+            if (valCheck_patologias && parseInt(valCheck_patologias.value) < peorValor) {
+                peorValor = parseInt(valCheck_patologias.value);
+                debil = "patologias";
+            }
+    
+            let valCheck_chequeos = document.querySelector('input[name="chequeos"]:checked');
+            if (valCheck_chequeos && parseInt(valCheck_chequeos.value) < peorValor) {
+                peorValor = parseInt(valCheck_chequeos.value);
+                debil = "chequeos";
+            }
+    
+            let valCheck_bucal = document.querySelector('input[name="bucal"]:checked');
+            if (valCheck_bucal && parseInt(valCheck_bucal.value) < peorValor) {
+                peorValor = parseInt(valCheck_bucal.value);
+                debil = "bucal";
+            }
+    
+            let valCheck_libido = document.querySelector('input[name="libido"]:checked');
+            if (valCheck_libido && parseInt(valCheck_libido.value) < peorValor) {
+                peorValor = parseInt(valCheck_libido.value);
+                debil = "libido";
+            }
+    
+            let valCheck_ritmos = document.querySelector('input[name="ritmos"]:checked');
+            if (valCheck_ritmos && parseInt(valCheck_ritmos.value) < peorValor) {
+                peorValor = parseInt(valCheck_ritmos.value);
+                debil = "ritmos";
+            }
+    
+            let valCheck_antecedentes = document.querySelector('input[name="antecedentes"]:checked');
+            if (valCheck_antecedentes && parseInt(valCheck_antecedentes.value) < peorValor) {
+                peorValor = parseInt(valCheck_antecedentes.value);
+                debil = "antecedentes";
+            }
+    
+            let valCheck_ultraprocesados = document.querySelector('input[name="ultraprocesados"]:checked');
+            if (valCheck_ultraprocesados && parseInt(valCheck_ultraprocesados.value) < peorValor) {
+                peorValor = parseInt(valCheck_ultraprocesados.value);
+                debil = "ultraprocesados";
+            }
+    
+            let consejoTexto = {
+"fuerza": "💪 Prioriza el entrenamiento de fuerza para mejorar tu funcionalidad y longevidad.",
+"energia": "⚡ Mejora tu energía cuidando el sueño, alimentación y gestión del estrés.",
+"sueno": "😴 Optimiza tu descanso: la calidad del sueño influye directamente en tu regeneración celular.",
+"estres": "🧘‍♂️ Tu nivel de estrés está afectando tu vitalidad. Incorpora prácticas como respiración, meditación y pausas activas.",
+"alimentacion": "🥗 Ajusta tu alimentación para reducir la inflamación y mejorar tu metabolismo.",
+"peso": "⚖️ Alcanzar un peso saludable reduce riesgo de enfermedad metabólica y mejora tu esperanza de vida.",
+"actividad": "🚶‍♂️ Aumentar tu movimiento diario tendrá impacto inmediato en tu longevidad.",
+"alcohol": "🍷 Reducir el alcohol tiene beneficios directos sobre inflamación, hígado y sueño.",
+"tabaco": "🚭 Si fumas, cada día sin tabaco rejuvenece tus células.",
+"suplementos": "💊 Considera incorporar suplementos esenciales con respaldo clínico.",
+"inmunidad": "🛡️ Una inmunidad frágil puede indicar estrés crónico o carencias: refuerza tus defensas.",
+"proposito": "🎯 Cultivar propósito y motivación diaria impacta positivamente tus biomarcadores.",
+"social": "👥 Fortalece tus relaciones: la conexión social es un predictor potente de longevidad.",
+"patologias": "🩺 Mantén controladas tus condiciones crónicas para ralentizar el deterioro funcional.",
+"chequeos": "📈 Establece un plan de seguimiento con pruebas periódicas para anticiparte a riesgos.",
+"bucal": "🦷 La salud bucal está conectada con inflamación sistémica: no la descuides.",
+"libido": "❤️ Cambios hormonales o estrés pueden influir en tu líbido. Evalúa con un especialista.",
+"ritmos": "🕒 Estabilidad en horarios de comida y sueño fortalece tus ritmos circadianos.",
+"antecedentes": "🧬 Conocer tus antecedentes te permite actuar antes que el problema aparezca.",
+"ultraprocesados": "🚫 Disminuye el consumo de ultraprocesados y prioriza alimentos reales.",
+
+            };
+
+            if (debil) {
+                document.getElementById("textoConsejo").innerText = consejoTexto[debil];
+                document.getElementById("consejo").style.display = "block";
+            }
         }
     </script>
 </body>
