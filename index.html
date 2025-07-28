@@ -220,26 +220,27 @@
   
 <div id="emailScreen" class="hidden" style="text-align:center; margin-top: 30px;">
   <h2>Estás a un solo paso de conocer tu VitalScore</h2>
-  <p>Déjanos tu mejor email, y recibirás:</p>
+  <p>Déjanos tu mejor email y recibirás:</p>
   <ul style="text-align:left; display:inline-block;">
     <li>✅ Tu edad biológica estimada</li>
     <li>✅ Recomendaciones personalizadas</li>
     <li>📘 Nuestro ebook <strong>“7 Claves científicas para hackear tu juventud”</strong> </li>
   </ul>
-
+     
+  <!-- Formulario para que el usuario ponga su nombre y su email -->
   <input id="userName" placeholder="Tu nombre (opcional)" type="text" style="padding: 10px; width: 70%; max-width: 300px; margin-bottom: 10px;"><br>
-  <input id="userEmail" placeholder="tu_mejor@email.com" type="email" style="padding: 10px; width: 70%; max-width: 300px;"><br><br>
+  <input type="email" id="userEmail" placeholder="tu@email.com" style="padding: 10px; width: 70%; max-width: 300px;"><br><br>
 
-  <!-- CAPTCHA -->
+<!-- CAPTCHA -->
   <div style="margin-top: 12px;">
     <label id="captchaPregunta" style="font-size: 14px;">Cargando pregunta de seguridad...</label><br/>
     <input id="captchaRespuesta" type="text" style="margin-top: 4px; width: 60px;" />
   </div>
 
-  <!-- Honeypot -->
+<!-- Honeypot -->
   <input id="campoTrampa" type="text" autocomplete="off" style="display: none;" />
 
-  <!-- Checkbox RGPD -->
+<!-- Checkbox RGPD -->
   <div style="margin-top: 12px; font-size: 14px;">
     <label for="consentimientoRGPD">
       <input id="consentimientoRGPD" type="checkbox" />
@@ -248,25 +249,11 @@
   <p style="font-size: 13px; color: #555; margin-top: 8px;">
   <span style="font-size: 15px;">⚖️ <strong>Compromiso VitalExtension</strong>:</span>
   Jamás cederemos tu email ni enviaremos spam. Solo lo usaremos para enviarte tu informe y contenido valioso sobre longevidad.
-</p>
-
+   </p>
   </div>
 
-  <!-- Botón de envío -->
-  <button id="submitEmail" onclick="enviarEmail()" style="margin-top: 20px;">
-    <span id="btnText">Enviar</span>
-    <span id="spinner" style="display:none; margin-left:10px;">⏳</span>
-  </button>
-
-  <!-- Feedback -->
-  <p id="emailFeedback" style="color: red; display: none; margin-top: 10px;"></p>
-
-  <!-- Botón de descarga -->
-  <button id="downloadBtn" onclick="window.open('https://github.com/nrventurini/ebook_longevidad/raw/main/guia-longevidad.pdf', '_blank')" style="display:none; margin-top: 20px;">
-    📥 Descargar guía gratuita en PDF
-  </button>
+  <button onclick="validarEmail()">Ver mi VitalScore</button>
 </div>
-
 
 <div id="result" class="hidden">
 
@@ -274,12 +261,20 @@
       <p>🔗 Comparte tu VitalScore con un amigo:</p>
       <button onclick="compartirWhatsApp()" style="margin: 5px;">📲 WhatsApp</button>
       <button onclick="compartirEmail()" style="margin: 5px;">📧 Email</button>
+      
+    
     </div>
 
     <div id="badgeContainer" style="margin: 20px auto; width: 200px; height: 200px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 16px;"></div>
     <h2>¡Felicidades, has completado tu VitalScore!</h2>
     <p id="scoreResult"></p>
     <p id="ageResult"></p>
+
+    <!-- Botón de descarga del eBook -->
+    <button id="downloadBtn" onclick="window.open('https://github.com/nrventurini/ebook_longevidad/raw/main/guia-longevidad.pdf', '_blank')" style="margin-top: 20px;">
+  📥 Descarga gratuita Ebook: 7 Claves científicas para hackear tu juventud
+    </button>
+
   </div>
 </div>
 
@@ -334,6 +329,23 @@ function nextBlock() {
     } else {
       calcularResultados();
     }
+
+    // 🧠 Pregunta CAPTCHA aleatoria
+    const preguntasCaptcha = [
+    { pregunta: "Pregunta de seguridad: ¿Cuánto es 3 + 5?", respuesta: "8" },
+    { pregunta: "Pregunta de seguridad: ¿Cuánto es 6 - 2?", respuesta: "4" },
+    { pregunta: "Pregunta de seguridad: ¿Cuánto es 1 + 2?", respuesta: "3" },
+    { pregunta: "Pregunta de seguridad: ¿Cuánto es 3 + 2?", respuesta: "5" },
+    { pregunta: "Pregunta de seguridad: ¿Cuánto es 5 + 2?", respuesta: "7" },
+    { pregunta: "Pregunta de seguridad: ¿Cuánto es 7 + 2?", respuesta: "9" },
+    { pregunta: "Pregunta de seguridad: ¿Cuánto es 2 x 1?", respuesta: "2" },
+    { pregunta: "Pregunta de seguridad: ¿Cuánto es 3 - 2?", respuesta: "1" },
+    { pregunta: "Pregunta de seguridad: ¿Cuánto es 3 + 3?", respuesta: "6" },
+    { pregunta: "Pregunta de seguridad: ¿Cuánto es 10 - 5?", respuesta: "5" }
+    ];
+    captchaActual = preguntasCaptcha[Math.floor(Math.random() * preguntasCaptcha.length)];
+    document.getElementById("captchaPregunta").textContent = captchaActual.pregunta;
+
   }
 
   
@@ -346,23 +358,6 @@ function prevBlock() {
     actualizarProgreso();
     }
   }
-
-// 🧠 Pregunta CAPTCHA aleatoria
-const preguntasCaptcha = [
-  { pregunta: "Pregunta de seguridad: ¿Cuánto es 3 + 5?", respuesta: "8" },
-  { pregunta: "Pregunta de seguridad: ¿Cuánto es 6 - 2?", respuesta: "4" },
-  { pregunta: "Pregunta de seguridad: ¿Cuánto es 1 + 2?", respuesta: "3" },
-  { pregunta: "Pregunta de seguridad: ¿Cuánto es 3 + 2?", respuesta: "5" },
-  { pregunta: "Pregunta de seguridad: ¿Cuánto es 5 + 2?", respuesta: "7" },
-  { pregunta: "Pregunta de seguridad: ¿Cuánto es 7 + 2?", respuesta: "9" },
-  { pregunta: "Pregunta de seguridad: ¿Cuánto es 2 x 1?", respuesta: "2" },
-  { pregunta: "Pregunta de seguridad: ¿Cuánto es 3 - 2?", respuesta: "1" },
-  { pregunta: "Pregunta de seguridad: ¿Cuánto es 3 + 3?", respuesta: "6" },
-  { pregunta: "Pregunta de seguridad: ¿Cuánto es 10 - 5?", respuesta: "5" }
-];
-captchaActual = preguntasCaptcha[Math.floor(Math.random() * preguntasCaptcha.length)];
-document.getElementById("captchaPregunta").textContent = captchaActual.pregunta;
-
 
   
 // Función principal para calcular:
@@ -627,13 +622,15 @@ function mostrarRecomendaciones(puntajesPorPilar) {
     </p>
     <p style="font-weight: bold; font-size: 1.1em; margin-top: 20px;">
       🚀 ¿Te gustaría optimizar tu VitalScore con ayuda profesional?
-      <a href="https://www.vitalextension.com" target="_blank" style="background-color: #4caf50; color: white; padding: 10px 20px; border-radius: 6px; text-decoration: none;">
+      <a href="https://www.vitalextension.com/servicios/" target="_blank" style="background-color: #4caf50; color: white; padding: 10px 20px; border-radius: 6px; text-decoration: none;">
         ¡Click aquí!
       </a>
     </p>
+
   </div>
 `);
 }
+
 
 
 // Esta función actualiza la barra de progreso basada en preguntas individuales respondidas.
@@ -662,6 +659,9 @@ function actualizarProgreso() {
 }
 
 
+
+
+
 // Funciones para compartir el resultado
 
 function compartirWhatsApp() {
@@ -683,51 +683,40 @@ function compartirEmail() {
 
 
 
-function enviarEmail() {
+// Validar email, RGPD, CAPTCHA, HONEYPOT, GOOGLESHEET antes de mostrar resultados finales
+function validarEmail() {
+  
   const name = document.getElementById("userName").value.trim();
   const email = document.getElementById("userEmail").value.trim();
+
   const captcha = document.getElementById("captchaRespuesta").value.trim();
-  const feedback = document.getElementById("emailFeedback");
-  const downloadBtn = document.getElementById("downloadBtn");
-  const btnText = document.getElementById("btnText");
-  const spinner = document.getElementById("spinner");
-  const submitBtn = document.getElementById("submitEmail");
+
+
+  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+   // ✅ Validar que el email está correcto
+  if (!regex.test(email)) {
+    alert("Por favor, introduce un email válido.");
+    return;
+  }
 
   // ✅ Validar RGPD
   if (!document.getElementById("consentimientoRGPD").checked) {
-    feedback.textContent = "Debes aceptar la política de privacidad para continuar.";
-    feedback.style.display = "block";
+    alert("Debes aceptar la política de privacidad para continuar.");
     return;
   }
 
-  // ✅ Validar honeypot
+    // ✅ Validar honeypot
   if (document.getElementById("campoTrampa").value !== "") {
-    feedback.textContent = "Detección de comportamiento automático.";
-    feedback.style.display = "block";
+    alert("Detección de comportamiento automático.");
     return;
   }
-
+  
   // ✅ Validar CAPTCHA
-  if (captcha !== captchaActual.respuesta) {
-    feedback.textContent = "Respuesta incorrecta a la verificación. Intenta de nuevo.";
-    feedback.style.display = "block";
-    return;
-  }
-
-  // ✅ Validar email
-  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!regex.test(email)) {
-    feedback.textContent = "Por favor, introduce un email válido.";
-    feedback.style.display = "block";
-    return;
-  }
-
-  // ✅ Feedback visual
-  feedback.style.color = "green";
-  feedback.textContent = "Enviando...";
-  btnText.textContent = "Enviando...";
-  spinner.style.display = "inline-block";
-  submitBtn.disabled = true;
+    if (captcha !== captchaActual.respuesta) {
+        alert("Respuesta incorrecta a la verificación. Intenta de nuevo.");
+        return;
+    }
 
   // ✅ Enviar a Google Sheets
   enviarResultadosAGoogleSheets({
@@ -736,19 +725,8 @@ function enviarEmail() {
     Origen: "Test_VitalScore"
   });
 
-  // ✅ Mostrar botón descarga
-  setTimeout(() => {
-    feedback.textContent = "✔️ ¡Listo! Tu guía está lista para descargar.";
-    downloadBtn.style.display = "block";
-    btnText.textContent = "Enviar";
-    spinner.style.display = "none";
-
-    // 🧠 Bloqueo permanente del botón para evitar spam
-    submitBtn.disabled = true;
-    submitBtn.style.cursor = "not-allowed";
-    submitBtn.style.opacity = "0.6";
-
-  }, 1200);
+  document.getElementById("emailScreen").classList.add("hidden");
+  document.getElementById("result").classList.remove("hidden");
 }
 
 function enviarResultadosAGoogleSheets(data) {
@@ -765,7 +743,6 @@ function enviarResultadosAGoogleSheets(data) {
   .then(text => console.log("✅ Datos enviados:", text))
   .catch(error => console.error("❌ Error al enviar:", error));
 }
-
 
 
 </script>
