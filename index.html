@@ -669,7 +669,7 @@ function actualizarProgreso() {
 function compartirWhatsApp() {
   const score = document.getElementById("scoreResult").textContent;
   const age = document.getElementById("ageResult").textContent;
-  const mensaje = `¡Acabo de calcular mi VitalScore!\n${score}\n${age}\n¿Te animas a descubrir el tuyo? Haz el test aquí 👉 https://www.vitalextension.com/vitalscore`;
+  const mensaje = `¡Acabo de calcular mi VitalScore!\n${score}\n${age}\n¿Te animas a descubrir el tuyo? Haz el test aquí 👉 https://www.vitalextension.com/vital-lab/`;
   const url = "https://wa.me/?text=" + encodeURIComponent(mensaje);
   window.open(url, "_blank");
 }
@@ -678,7 +678,7 @@ function compartirEmail() {
   const score = document.getElementById("scoreResult").textContent;
   const age = document.getElementById("ageResult").textContent;
   const subject = "¡Mira mi VitalScore!";
-  const body = `Hola,%0D%0A%0D%0AHe hecho el test VitalScore y estos son mis resultados:%0D%0A${score}%0D%0A${age}%0D%0A%0D%0ATe animo a descubrir el tuyo aquí 👉 https://www.vitalextension.com/vitalscore`;
+  const body = `Hola,%0D%0A%0D%0AHe hecho el test VitalScore y estos son mis resultados:%0D%0A${score}%0D%0A${age}%0D%0A%0D%0ATe animo a descubrir el tuyo aquí 👉 https://www.vitalextension.com/vital-lab/`;
   const mailto = `mailto:?subject=${encodeURIComponent(subject)}&body=${body}`;
   window.open(mailto, "_blank");
 }
