@@ -867,7 +867,7 @@ function enviarResultadosAGoogleSheets(data) {
     formData.append(key, data[key]);
   }
 
-  fetch("https://script.google.com/macros/s/AKfycbxiG6oK4N_KJ6p6t9vjfEe82Z-RNl77-doyQg4SHv630Jyr3bl6uXPlcMXjnIUhXZRv/exec", {
+  fetch("https://script.google.com/macros/s/AKfycbwWK4TuJ0Nx_9dgQ9MReCM7MwaCxZBBHHhALAdJJ4KV5rcXEu2aVXblS6KppFERWkCp/exec", {
     method: "POST",
     body: formData
   })
