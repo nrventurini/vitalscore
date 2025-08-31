@@ -283,8 +283,6 @@
       <p>🔗 Comparte tu VitalScore con un amigo:</p>
       <button type="button" onclick="compartirWhatsApp()" style="margin: 5px;">📲 WhatsApp</button>
       <button type="button" onclick="compartirEmail()" style="margin: 5px;">📧 Email</button>
-      
-    
     </div>
 
     <div id="badgeContainer" style="margin: 20px auto; width: 200px; height: 200px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 16px;"></div>
@@ -293,7 +291,7 @@
     <p id="ageResult"></p>
 
     <!-- Botón de descarga del eBook -->
-    <button id="downloadBtn" type="button" onclick="secureOpen('https://github.com/nrventurini/ebook_longevidad/raw/main/guia-longevidad.pdf')" style="margin-top: 20px;">
+    <button id="downloadBtn" type="button" onclick="downloadEbook()">
 
   📥 Descarga gratuita Ebook: 7 Claves científicas para hackear tu juventud
     </button>
@@ -352,11 +350,71 @@ function initDynamicHoneypot(){
 }
 
 window.addEventListener("DOMContentLoaded", () => {
-  // No mostramos email aquí, pero dejamos listo el HP dinámico
   initDynamicHoneypot();
+  showBlock(currentBlock);
+  actualizarProgreso();
 });
 
-    
+
+// ==== VitalScore Lead-Scoring ====
+const VS_ORIGEN = "VitalScore";
+const vsMeta = { score: 0, suplementosTxt: "", edad: "", sent:{ ebook:0, blog:0, cta:0 } };
+
+function onceFlag(key){
+  if (sessionStorage.getItem(key)) return false;
+  sessionStorage.setItem(key,"1");
+  return true;
+}
+
+function getEmailPersist(){
+  let email = (document.getElementById("userEmail")?.value || "").trim();
+  if (!email) try { email = (localStorage.getItem("VS_Email")||"").trim(); } catch(_){}
+  return email;
+}
+function getNombrePersist(){
+  let nombre = (document.getElementById("userName")?.value || "").trim();
+  if (!nombre) try { nombre = (localStorage.getItem("VS_Nombre")||"").trim(); } catch(_){}
+  return nombre;
+}
+
+// Envío genérico compatible con mi Apps Script
+function enviarAGoogleSheets(payload){
+  // Reduce envíos duplicados accidentales al enviar eventos (ejemplo: se duplique evento al hacer dobleclick):
+  window.__VS_LAST_SEND__ = window.__VS_LAST_SEND__ || 0;
+  const now = Date.now();
+  if (now - window.__VS_LAST_SEND__ < 1200) return;
+  window.__VS_LAST_SEND__ = now;
+
+  //hacemos el fetch
+  const formData = new FormData();
+  Object.keys(payload).forEach(k=> formData.append(k, payload[k]));
+  fetch("https://script.google.com/macros/s/AKfycbwWK4TuJ0Nx_9dgQ9MReCM7MwaCxZBBHHhALAdJJ4KV5rcXEu2aVXblS6KppFERWkCp/exec", {
+    method: "POST", body: formData
+  }).then(r=>r.text()).then(t=>console.log("✅ VitalScore GS:", t))
+    .catch(e=>console.error("❌ VitalScore GS:", e));
+}
+
+// Normaliza todos los eventos (como en VitalGenius)
+function registrarEvento(nombreEvento, extra){
+  // Nota solo para el resultado principal
+  let nota = (nombreEvento === "ResultadoTest") ? String(vsMeta.score || "") : "";
+
+  let payload = {
+    Nombre: getNombrePersist(),
+    Email: getEmailPersist(),
+    Origen: VS_ORIGEN,
+    Evento: nombreEvento,                // ResultadoTest | DescargaEbook | LinkBlogFundamentos | ClickAquiCTA
+    NotaPct: nota,
+    TelemedPref: (nombreEvento === "ResultadoTest") ? (vsMeta.suplementosTxt || "") : "", // TelemedPref = suplementación  (Nota: utilizo TelemdPref por compatibiliad con el test VitalGenius)
+    TecnoMaturity: (nombreEvento === "ResultadoTest") ? String(vsMeta.edad || "") : "" //TecnoMaturity = edad cronológica (Nota: utilizo TecnoMaturity por compatibiliad con el test VitalGenius)
+  };
+
+  if (extra && typeof extra === "object") {
+    Object.keys(extra).forEach(k=> payload[k] = String(extra[k]));
+  }
+  enviarAGoogleSheets(payload);
+}
+  
 
 // Mostrar solo el bloque (pantalla) correspondiente al índice actual.
 // También se llama a actualizarProgreso() para mantener la barra de progreso sincronizada.
@@ -457,6 +515,15 @@ function calcularResultados() {
       edadBio = edad + (3 + (60 - score) / 1.5);
     }
 
+    // === NUEVO: guardar score y claves ===
+    const supInput = document.querySelector('input[name="block0_q4"]:checked');
+    let supTxt = "";
+    if (supInput) { supTxt = supInput.parentNode ? supInput.parentNode.textContent.trim() : ""; }
+    vsMeta.score = score;
+    vsMeta.suplementosTxt = supTxt;
+    vsMeta.edad = edad;
+
+
     document.getElementById("quizForm").style.display = "none";
     document.querySelector(".nav-buttons").style.display = "none";
     formOpenedAt = Date.now();            // <- timing antibot
@@ -485,8 +552,7 @@ function calcularResultados() {
     mostrarRecomendaciones(puntajesPorPilar);
   }
 
-  showBlock(currentBlock);
-    actualizarProgreso();
+  
 
 
 
@@ -672,7 +738,7 @@ function mostrarRecomendaciones(puntajesPorPilar) {
   <div id="infoExtra" style="margin-top: 40px; text-align: center;">
     <p style="font-size: 1em;">
       📚 ¿Quieres profundizar en la ciencia detrás del VitalScore?
-      <a href="https://www.vitalextension.com/vital-lab/" target="_blank"
+      <a id="linkFundamentosBlog" href="https://www.vitalextension.com/vital-lab/" target="_blank"
          rel="noopener"
          style="text-decoration: underline;">
         Descubre los fundamentos en nuestro Blog
@@ -680,7 +746,7 @@ function mostrarRecomendaciones(puntajesPorPilar) {
     </p>
     <p style="font-weight: bold; font-size: 1.1em; margin-top: 20px;">
       🚀 ¿Te gustaría optimizar tu VitalScore con ayuda profesional?
-      <a href="https://www.vitalextension.com/servicios/" target="_blank"
+      <a id="ctaServicios" href="https://www.vitalextension.com/servicios/" target="_blank"
          rel="noopener"
          style="background-color: #4caf50; color: white; padding: 10px 20px; border-radius: 6px; text-decoration: none;">
         ¡Click aquí!
@@ -688,6 +754,21 @@ function mostrarRecomendaciones(puntajesPorPilar) {
     </p>
   </div>
 `);
+
+// Handlers anti-spam (solo 1ª vez por sesión)
+const aBlog = document.getElementById("linkFundamentosBlog");
+if (aBlog) {
+  aBlog.addEventListener("click", function(){
+    if (onceFlag("VS_evt_blog")) registrarEvento("LinkBlogFundamentos");
+  });
+}
+const aCTA = document.getElementById("ctaServicios");
+if (aCTA) {
+  aCTA.addEventListener("click", function(){
+    if (onceFlag("VS_evt_cta")) registrarEvento("ClickAquiCTA");
+  });
+}
+
 
 recomendacionesDiv.insertAdjacentHTML('beforeend', `
   <div style="max-width:760px;margin:28px auto 0;text-align:center;border-top:1px solid #eee;padding-top:16px;">
@@ -806,60 +887,96 @@ function compartirEmail() {
 // Validar email, RGPD, CAPTCHA, HONEYPOT, GOOGLESHEET antes de mostrar resultados finales
 function validarEmail() {
   
-  const name = document.getElementById("userName").value.trim();
-  const email = document.getElementById("userEmail").value.trim();
-  const captcha = document.getElementById("captchaRespuesta").value.trim();
-  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const name = document.getElementById("userName").value.trim();
+    const email = document.getElementById("userEmail").value.trim();
+    const captcha = document.getElementById("captchaRespuesta").value.trim();
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-  // Honeypots
-  const hp1 = document.getElementById("campoTrampa").value.trim();
-  const hp2 = document.getElementById("hpDyn") ? document.getElementById("hpDyn").value.trim() : "";
+    // Honeypots
+    const hp1 = document.getElementById("campoTrampa").value.trim();
+    const hp2 = document.getElementById("hpDyn") ? document.getElementById("hpDyn").value.trim() : "";
 
 
-  // Tiempo mínimo (8s) desde que se mostró el email
-  const timeOk = formOpenedAt ? (Date.now() - formOpenedAt) >= 8000 : false;
+    // Tiempo mínimo (8s) desde que se mostró el email
+    const timeOk = formOpenedAt ? (Date.now() - formOpenedAt) >= 8000 : false;
 
-   // ✅ Validar que el email está correcto
-  if (!regex.test(email)) {
-    alert("Por favor, introduce un email válido.");
-    return;
+    // ✅ Validar que el email está correcto
+    if (!regex.test(email)) {
+      alert("Por favor, introduce un email válido.");
+      return;
+    }
+
+    // ✅ Validar RGPD
+    if (!document.getElementById("consentimientoRGPD").checked) {
+      alert("Debes aceptar la política de privacidad para continuar.");
+      return;
+    }
+
+      // ✅ Validar honeypot
+    if (hp1 !== "" || hp2 !== "") {
+      alert("Detección de comportamiento automático.");
+      return;
+    }
+    
+    // ✅ Validar CAPTCHA
+    if (!captchaActual || captcha !== captchaActual.respuesta) {
+      alert("Respuesta incorrecta a la pregunta de seguridad. Intenta de nuevo.");
+      regenerarCaptcha();  // <- importante
+      return;
+    }
+
+    if (!timeOk) {
+      alert("Demasiado rápido. Por favor, revisa los datos y vuelve a intentarlo.");
+      return;
+    }
+
+
+    // Guardar para reutilizar en eventos
+    try {
+      localStorage.setItem("VS_Nombre", name);
+      localStorage.setItem("VS_Email", email);
+    } catch(_){}
+
+    // Enviar fila principal del test
+    registrarEvento("ResultadoTest");
+
+    // Mostrar resultados finales
+    document.getElementById("emailScreen").classList.add("hidden");
+    document.getElementById("result").classList.remove("hidden");
+    // Si ya descargó el eBook en esta sesión, mantener el botón desactivado
+    if (sessionStorage.getItem('VS_ebook_disabled') === '1') { markDownloadBtnDisabled(); }
+
   }
 
-  // ✅ Validar RGPD
-  if (!document.getElementById("consentimientoRGPD").checked) {
-    alert("Debes aceptar la política de privacidad para continuar.");
-    return;
-  }
 
-    // ✅ Validar honeypot
-  if (hp1 !== "" || hp2 !== "") {
-    alert("Detección de comportamiento automático.");
-    return;
-  }
-  
-  // ✅ Validar CAPTCHA
-  if (!captchaActual || captcha !== captchaActual.respuesta) {
-    alert("Respuesta incorrecta a la pregunta de seguridad. Intenta de nuevo.");
-    regenerarCaptcha();  // <- importante
-    return;
-  }
-
-  if (!timeOk) {
-    alert("Demasiado rápido. Por favor, revisa los datos y vuelve a intentarlo.");
-    return;
-  }
-
-
-  // ✅ Enviar a Google Sheets
-  enviarResultadosAGoogleSheets({
-    Nombre: name,
-    Email: email,
-    Origen: "Test_VitalScore"
-  });
-
-  document.getElementById("emailScreen").classList.add("hidden");
-  document.getElementById("result").classList.remove("hidden");
+// Desactiva visual y funcionalmente el botón de descarga
+function markDownloadBtnDisabled(){
+  var btn = document.getElementById('downloadBtn');
+  if (!btn) return;
+  btn.disabled = true;
+  btn.setAttribute('aria-disabled','true');
+  btn.style.cursor = 'not-allowed';
+  btn.style.opacity = '0.6';
+  btn.style.filter = 'grayscale(0.2)';
+  btn.style.pointerEvents = 'none';
+  btn.textContent = '📥 Ebook descargado';
 }
+
+// Maneja la descarga (con anti-spam y desactivación del botón)
+function downloadEbook(){
+  // Registrar solo la primera vez por sesión
+  if (onceFlag('VS_evt_ebook')) {
+    registrarEvento('DescargaEbook');
+  }
+  // Desactivar botón y persistir estado en la sesión
+  markDownloadBtnDisabled();
+  try { sessionStorage.setItem('VS_ebook_disabled','1'); } catch(_){}
+
+  // Abrir el PDF
+  secureOpen('https://github.com/nrventurini/ebook_longevidad/raw/main/guia-longevidad.pdf');
+}
+
+
 
 function enviarResultadosAGoogleSheets(data) {
   const formData = new FormData();
